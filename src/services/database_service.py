@@ -3,7 +3,7 @@ from bson import ObjectId
 from dotenv import load_dotenv
 import os
 
-load_dotenv()
+load_dotenv(override=True)
 
 MONGO_DETAILS = os.getenv("MONGO_DETAILS")
 
