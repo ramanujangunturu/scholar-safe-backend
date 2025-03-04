@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+pydantic
+python-dotenv
+passlib[bcrypt]
+motor
+pandas
+sentence-transformers
+faiss-cpu
+scikit-learn
+pyJWT
