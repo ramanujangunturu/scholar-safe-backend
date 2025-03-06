@@ -2,12 +2,15 @@
 from motor.motor_asyncio import AsyncIOMotorClient
 from bson import ObjectId
 from ..models.item_model import Item
+import os
 
-client = AsyncIOMotorClient("mongodb://localhost:27017")
+MONGO_DETAILS = os.getenv("MONGO_DETAILS")
+client = AsyncIOMotorClient(MONGO_DETAILS)
 db = client.mydatabase
 collection = db.items
 
 async def get_all_items():
+    print(MONGO_DETAILS)
     items = await collection.find().to_list(100)
     return items
 

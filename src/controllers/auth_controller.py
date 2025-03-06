@@ -19,3 +19,12 @@ async def login(user: UserLogin):
         raise HTTPException(status_code=400, detail="Invalid email or password")
     access_token = create_access_token(data={"sub": user.email})
     return {"access_token": access_token, "token_type": "bearer"}
+
+async def loginEmail(user: UserLogin):
+    db_user = await get_user_by_email(user.email)
+    print(db_user)
+    print("helo")
+    if not db_user :
+        raise HTTPException(status_code=400, detail="Invalid email or password")
+    access_token = create_access_token(data={"sub": user.email})
+    return {"access_token": access_token, "token_type": "bearer"}
