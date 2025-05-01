@@ -9,3 +9,5 @@ sentence-transformers
 faiss-cpu
 scikit-learn
 pyJWT
+aiohttp
+PyPDF2
