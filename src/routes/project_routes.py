@@ -1,14 +1,18 @@
 from fastapi import APIRouter, Query
-from typing import List
+from typing import List, Optional
 from ..models.project_model import ProjectCreate
-from ..controllers.project_controller import save_project, search_projects_by_title, fetch_all_projects
+from ..controllers.project_controller import (
+    save_project,
+    search_projects_by_title,
+    fetch_all_projects,
+    search_projects_by_description,
+)
 
 router = APIRouter()
 
 @router.post("/add", response_model=dict)
 async def post_project(project: ProjectCreate):
     return await save_project(project)
-from typing import Optional
 
 @router.get("/search", response_model=List[dict])
 async def search_projects(
@@ -19,3 +23,10 @@ async def search_projects(
 @router.get("/all", response_model=List[dict])
 async def get_all_projects():
     return await fetch_all_projects()
+
+@router.post("/similarity-search", response_model=List[dict])
+async def similarity_search(
+    description: str = Query(..., description="Description to search for similar projects"),
+    top_k: int = Query(5, description="Number of top similar projects to retrieve"),
+):
+    return await search_projects_by_description(description, top_k)

@@ -10,6 +10,7 @@ class ProjectCreate(BaseModel):
     team_members: List[str] 
     year_done: int
     tech_stack: List[str]
+    project_description_embedding: List[float] = Field(default_factory=list)  # New field for embedding
 
     def to_dict(self) -> dict:
         return {
@@ -18,5 +19,6 @@ class ProjectCreate(BaseModel):
             "project_pdf_link": self.project_pdf_link,
             "team_members": self.team_members,
             "year_done": self.year_done,
-            "tech_stack": self.tech_stack
+            "tech_stack": self.tech_stack,
+            "project_description_embedding": self.project_description_embedding  # Include embedding in dict
         }
