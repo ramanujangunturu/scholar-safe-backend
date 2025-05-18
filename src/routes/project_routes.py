@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Query
 from typing import List, Optional
+from pydantic import BaseModel, HttpUrl
 from ..models.project_model import ProjectCreate
 from ..controllers.project_controller import (
     save_project,
@@ -9,6 +10,11 @@ from ..controllers.project_controller import (
 )
 
 router = APIRouter()
+
+class SimilaritySearchRequest(BaseModel):
+    description: Optional[str] = None
+    pdf_url: Optional[str] = None
+    top_k: int = 5
 
 @router.post("/add", response_model=dict)
 async def post_project(project: ProjectCreate):
@@ -25,8 +31,9 @@ async def get_all_projects():
     return await fetch_all_projects()
 
 @router.post("/similarity-search", response_model=List[dict])
-async def similarity_search(
-    description: str = Query(..., description="Description to search for similar projects"),
-    top_k: int = Query(5, description="Number of top similar projects to retrieve"),
-):
-    return await search_projects_by_description(description, top_k)
+async def similarity_search(request: SimilaritySearchRequest):
+    return await search_projects_by_description(
+        description=request.description or "",
+        top_k=request.top_k,
+        pdf_url=request.pdf_url,
+    )
