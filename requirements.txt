@@ -11,3 +11,5 @@ scikit-learn
 pyJWT
 aiohttp
 PyPDF2
+tensorflow
+tf-keras

@@ -8,6 +8,7 @@ from ..controllers.project_controller import (
     fetch_all_projects,
     search_projects_by_description,
 )
+from ..services.project_service import rank_projects_with_bert, fetch_all_projects_in_db
 
 router = APIRouter()
 
@@ -37,3 +38,13 @@ async def similarity_search(request: SimilaritySearchRequest):
         top_k=request.top_k,
         pdf_url=request.pdf_url,
     )
+
+@router.get("/ranked", response_model=List[dict])
+async def get_ranked_projects():
+    """
+    Returns all projects ranked by the BERT-based model.
+    """
+    projects = await fetch_all_projects_in_db()
+    print(projects)
+    ranked_projects = rank_projects_with_bert(projects)
+    return ranked_projects
